@@ -3,36 +3,35 @@
 Playing around with ssh config and commands
 
 == SSH Installation
-=== 1. Update your Linux System:
+=== 1. Update your Linux System
 [source,sh]
 sudo apt update
 
-=== 2. Install SSH client and server latest versions:
+=== 2. Install SSH client and server latest versions
 [source,sh]
 sudo apt install ssh
 
 == SSH Key Pair
-=== 1. Create SSH key pair in your local machine:
+=== 1. Create SSH key pair in your local machine
 [source,sh]
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/playground
 
 We have created a *4096 bits* length *RSA* type key in the *~/.ssh/playground* file.
 
-=== 2. Copy public key to the server:
-==== 2.1. Do it MANUALLY with *scp* or *rsync*:
+=== 2. Copy public key to the server
+There are 2 ways to add the public key to our server: MANUALLY or using *ssh-copy-id* command.
+
+==== A. Do it MANUALLY with *scp* command:
 [source,sh]
 scp ~/ssh/playground.pub user@[server_ip]:/home/user/.ssh/uploaded_playground.pub
 
-==== 2.2. Do it with SSH-COPY-ID command:
-[source,sh]
-ssh-copy-id user@[server_ip]
+* Add the public key to authorized keys:
 
-=== 3. Add the public key to authorized keys
-==== 3.1. With the following command, copy the key to the authorized_keys file:
+With the following command, copy the key to the authorized_keys file:
 [source,sh]
 cat ~/.ssh/uploaded_playground.pub >> ~/.ssh/authorized_keys
 
-==== 3.2. Ensure the directory and files permissions:
+* Ensure the directory and files permissions:
 * SSH directory must be 700:
 [source,sh]
 chmod 700 ~/.shh
@@ -40,7 +39,11 @@ chmod 700 ~/.shh
 * SSH files must be 600:
 chmod 600 ~/.ssh/*
 
-==== 3.3. Try to log in via SSH to the server:
+==== B. Do it with SSH-COPY-ID command:
+[source,sh]
+ssh-copy-id user@[server_ip]
+
+=== 3. Try to log in via SSH to the server
 [source,sh]
 ssh user@[server_ip]
 
@@ -64,3 +67,29 @@ Even of you want the key to be checked just for a custom Host you can set it lik
 AddKeysToAgent yes
 Host myHost
     IdentityFile ~/.ssh/playground
+
+
+== SSH Custom Port
+
+=== 1. Configure the server
+In the server, go to */etc/ssh/sshd_config* and change the *#Port 22* line as follows:
+[source,sh]
+Port [custom_port]
+
+Now restart the ssh service to apply changes:
+[source,sh]
+sudo service ssh restart
+
+From your local machine, access the server with the custom port using the *-p* flag as follows:
+[source,sh]
+ssh -p [custom_port] user@[server_ip]
+
+=== 2. Set the custom port as default
+On your local machine, go to *~/.ssh/config* and set the port for the server:
+[source,sh]
+AddKeysToAgent yes
+Host myHost
+    IdentityFile ~/.ssh/playground
+    Port [custom_port]
+
+Save the file and use the *ssh* command without the *-p* flag.
