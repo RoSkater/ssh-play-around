@@ -93,3 +93,23 @@ Host myHost
     Port [custom_port]
 
 Save the file and use the *ssh* command without the *-p* flag.
+
+== Firewall Stuff
+We wil be using *UFW* so make sure you have it installed, or install it if you don't have it:
+[source,sh]
+sudo apt update
+sudo apt install ufw
+
+=== 1. Allow Only Access from Your Machine IP Address
+[source,sh]
+sudo ufw allow from <your_ip_address> to any port 12345
+
+=== 2. Enable the Firewall
+[source,sh]
+sudo ufw enable
+
+You can check the rules with:
+[source,sh]
+sudo ufw status
+
+Now you should be able to access the server ONLY from your local machine whenever it has assigned the said IP address.
