@@ -37,6 +37,7 @@ cat ~/.ssh/uploaded_playground.pub >> ~/.ssh/authorized_keys
 chmod 700 ~/.shh
 
 * SSH files must be 600:
+[source,sh]
 chmod 600 ~/.ssh/*
 
 ==== B. Do it with SSH-COPY-ID command:
