@@ -42,7 +42,7 @@ chmod 600 ~/.ssh/*
 
 ==== B. Do it with SSH-COPY-ID command:
 [source,sh]
-ssh-copy-id user@[server_ip]
+ssh-copy-id -i ~/.ssh/uploaded_playground.pub user@[server_ip]
 
 === 3. Try to log in via SSH to the server
 [source,sh]
@@ -63,7 +63,7 @@ IdentityFile ~/.ssh/playground
 * The *AddKeysToAgent* option with a value of yes tells the SSH agent to automatically add keys upon startup.
 * The *IdentityFile* specifies the private key file to be checked.
 
-Even of you want the key to be checked just for a custom Host you can set it like:
+Even if you want the key to be checked just for a custom Host you can set it like:
 [source,sh]
 AddKeysToAgent yes
 Host myHost
@@ -96,7 +96,7 @@ Host myHost
 Save the file and use the *ssh* command without the *-p* flag.
 
 == Firewall Stuff
-We wil be using *UFW* so make sure you have it installed, or install it if you don't have it:
+We will be using *UFW* so make sure you have it installed, or install it if you don't have it:
 [source,sh]
 sudo apt update
 sudo apt install ufw
